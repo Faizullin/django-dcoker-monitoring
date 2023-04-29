@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'dashboard_authentication',
     'dashboard',
     'dashboard_api',
+    'django_crontab',
 ]
 
 MIDDLEWARE = [
@@ -116,11 +117,11 @@ WSGI_APPLICATION = 'monitoring.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB"),
-        "USER": os.getenv("POSTGRES_USER"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
-        "HOST": os.getenv("POSTGRES_HOST"),  # set in docker-compose.yml
-        "PORT": 5432,  # default postgres port
+        "NAME": os.getenv("DB_DATABASE"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),  # set in docker-compose.yml
+        #"PORT": 5432,  # default postgres port
     }
 }
 # Password validation
@@ -172,8 +173,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-print(MEDIA_ROOT,STATIC_ROOT)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -249,4 +248,9 @@ LANGUAGES = (
 LOCALE_PATHS = [
     BASE_DIR / 'locale/',
     
+]
+
+
+CRONJOBS = [
+    ('*/1 * * * *', 'dashboard.management.commands.save_db',),
 ]

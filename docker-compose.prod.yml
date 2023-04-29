@@ -29,7 +29,7 @@ services:
         build: ./nginx
         restart: always
         ports:
-            - 80:80
+            - 80:8000
         volumes:
           - static_data:/app/static
           - media_data:/app/mediac
